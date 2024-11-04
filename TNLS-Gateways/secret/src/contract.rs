@@ -94,6 +94,7 @@ pub fn execute(deps: DepsMut, env: Env, info: MessageInfo, msg: ExecuteMsg) -> S
     pad_handle_result(response, BLOCK_SIZE)
 }
 
+#[cfg(feature = "contract")]
 #[entry_point]
 pub fn migrate(_deps: DepsMut, _env: Env, msg: MigrateMsg) -> StdResult<Response> {
     match msg {
