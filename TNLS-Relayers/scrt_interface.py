@@ -10,7 +10,7 @@ import requests
 
 from secret_sdk.client.lcd import LCDClient
 from secret_sdk.client.lcd.api.tx import CreateTxOptions, BroadcastMode
-from secret_sdk.core import Event
+from secret_sdk.protobuf.tendermint.abci import Event
 from secret_sdk.exceptions import LCDResponseError
 from secret_sdk.key.raw import RawKey
 
