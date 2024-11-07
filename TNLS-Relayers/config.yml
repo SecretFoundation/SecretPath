@@ -65,7 +65,7 @@
   timeout: 1
 
 "534352": #Scroll
-  active: true
+  active: false
   type: "evm"
   chain_id: "534352"
   api_endpoint: https://scroll.drpc.org
@@ -270,7 +270,7 @@
   timeout: 1
 
 "59902": #Metis Sepolia
-  active: false
+  active: true
   type: "evm"
   chain_id: "59902"
   api_endpoint: https://sepolia.metisdevops.link
@@ -286,7 +286,7 @@
   timeout: 1
 
 "59141": #Linea Sepolia
-  active: false
+  active: true
   type: "evm"
   chain_id: "59141"
   api_endpoint: https://rpc.sepolia.linea.build
@@ -302,7 +302,7 @@
   timeout: 1
 
 "4202": #Lisk Sepolia
-  active: false
+  active: true
   type: "evm"
   chain_id: "4202"
   api_endpoint: https://rpc.sepolia-api.lisk.com
@@ -419,5 +419,5 @@
   chain_id: "pulsar-3"
   api_endpoint: "http://81.171.3.86:1317"
   contract_address: "secret10ex7r7c4y704xyu086lf74ymhrqhypayfk7fkj"
-  code_hash: "ad8ca07ffba1cb26ebf952c29bc4eced8319c171430993e5b5089887f27b3f70"
+  code_hash: "182c733154be0e39e42c3e1a2b5f553ecb83f761834a4dd2c08365e4b38164a9"
   feegrant_address: "secret1gutgtpw0caqfsp8ja0r5yecv8jxz2y8vhpnck8"

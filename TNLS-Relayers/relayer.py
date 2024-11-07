@@ -149,58 +149,45 @@ class Relayer:
         with ThreadPoolExecutor(max_workers=200) as executor:
             [executor.submit(process_chain, chain) for chain in chains_to_poll]
 
-def route_transaction(self, task: Task):
-    """
-    Routes a task to its destination network by calling the appropriate contract function.
+    def route_transaction(self, task: Task):
+        """
+        Routes a task to its destination network by calling the appropriate contract function.
 
-    Args:
-        task: The Task object to be routed.
-    """
+        Args:
+            task: The Task object to be routed.
+        """
 
-    # Initial log with task details
-    self.logger.info(f"Starting to route task with details: {vars(task)}")
+        self.logger.info(f"Routing task {vars(task)}")
 
-    # Check if the task has a destination network
-    if task.task_destination_network is None:
-        self.logger.warning(f"Task {task.task_data['task_id']} has no destination network, routing aborted.")
-        self.task_ids_to_statuses[task.task_data["task_id"]] = "Failed to route"
-        return
+        # Check if the task has a destination network
+        if task.task_destination_network is None:
+            self.logger.warning(f"Task {task} has no destination network, not routing")
+            self.task_ids_to_statuses[task.task_data["task_id"]] = "Failed to route"
+            return
 
-    # Check if the destination network is known
-    if task.task_destination_network not in self.dict_of_names_to_interfaces:
-        self.logger.warning(f"Unknown network '{task.task_destination_network}' for task {task.task_data['task_id']}. Routing aborted.")
-        self.task_ids_to_statuses[task.task_data["task_id"]] = "Failed to route"
-        return
+        # Check if the destination network is known
+        if task.task_destination_network not in self.dict_of_names_to_interfaces:
+            self.logger.warning(f"Network {task.task_destination_network} is unknown, not routing")
+            self.task_ids_to_statuses[task.task_data["task_id"]] = "Failed to route"
+            return
 
-    # Log contract and function info before routing
-    contract_for_txn = self.dict_of_names_to_interfaces[task.task_destination_network][1]
-    function_name = self.dict_of_names_to_interfaces[task.task_destination_network][3]
-    self.logger.info(f"Using contract '{contract_for_txn}' with function '{function_name}' for task {task.task_data['task_id']}")
+        # Get the contract interface and function name for the destination network
+        contract_for_txn = self.dict_of_names_to_interfaces[task.task_destination_network][1]
+        function_name = self.dict_of_names_to_interfaces[task.task_destination_network][3]
 
-    try:
         # Handle secret chains differently
         if task.task_destination_network in scrt_chains:
-            # Call the function and log the result
-            self.logger.info(f"Calling function '{function_name}' on secret network '{task.task_destination_network}' for task {task.task_data['task_id']}")
+            # Call the function and collect any new tasks generated
             new_tasks, _ = contract_for_txn.call_function(function_name, str(task))
             self.task_list.extend(new_tasks)
-            self.logger.info(f"New tasks added from secret network call for task {task.task_data['task_id']}: {new_tasks}")
         else:
-            # For other networks, log before and after calling the function
-            self.logger.info(f"Calling function '{function_name}' on network '{task.task_destination_network}' for task {task.task_data['task_id']}")
+            # For other networks, simply call the function
             contract_for_txn.call_function(function_name, str(task))
-            self.logger.info(f"Function '{function_name}' successfully called for task {task.task_data['task_id']} on '{task.task_destination_network}'")
 
-        # Update the task's status and log the routing success
+        # Update the task's status and log the routing
         self.task_ids_to_statuses[str(task.task_data["task_id"])] = f"Routed to {task.task_destination_network}"
         self.task_ids_to_info[str(task.task_data["task_id"])] = str(task)
-        self.logger.info(f"Successfully routed task {task.task_data['task_id']} to {task.task_destination_network}")
-
-    except Exception as e:
-        # Log any exception details for troubleshooting
-        self.logger.error(f"Error routing task {task.task_data['task_id']} to {task.task_destination_network}: {e}")
-        self.task_ids_to_statuses[task.task_data["task_id"]] = "Failed during routing"
-
+        self.logger.info(f"Routed {task} to {task.task_destination_network}")
 
     def task_list_handle(self):
         """
