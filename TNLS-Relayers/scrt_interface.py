@@ -10,7 +10,7 @@ import requests
 
 from secret_sdk.client.lcd import LCDClient
 from secret_sdk.client.lcd.api.tx import CreateTxOptions, BroadcastMode
-from secret_sdk.core import TxLog
+from secret_sdk.core import Event
 from secret_sdk.exceptions import LCDResponseError
 from secret_sdk.key.raw import RawKey
 
@@ -326,14 +326,14 @@ class SCRTContract(BaseContractInterface):
         transaction_result = self.interface.sign_and_send_transaction(txn)
         try:
             self.logger.info(f"Transaction result: {transaction_result}")
-            logs = transaction_result.logs
+            events = transaction_result.events
         except AttributeError:
-            logs = []
-        task_list = self.parse_event_from_txn('wasm', logs)
+            events = []
+        task_list = self.parse_event_from_txn('wasm', events)
         self.logger.info(f"Transaction result: {task_list}")
         return task_list, transaction_result
 
-    def parse_event_from_txn(self, event_name: str, logs: List[TxLog]):
+    def parse_event_from_txn(self, event_name: str, events: List[Event]):
         """
         Parses the given event from the given logs
         Args:
@@ -344,9 +344,8 @@ class SCRTContract(BaseContractInterface):
 
         """
         task_list = []
-        for log in logs:
-            events = [event for event in log.events if event['type'] == event_name]
-            for event in events:
-                attr_dict = {attribute['key']: attribute['value'] for attribute in event['attributes']}
-                task_list.append(Task(attr_dict))
+        filtered_events = [event for event in events if event['type'] == event_name]
+        for event in filtered_events:
+            attr_dict = {attribute['key']: attribute['value'] for attribute in event['attributes']}
+            task_list.append(Task(attr_dict))
         return task_list
