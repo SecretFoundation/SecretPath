@@ -168,7 +168,6 @@
   contract_address: "0x8EaAB5e8551781F3E8eb745E7fcc7DAeEFd27b1f"
   timeout: 1
 
-
 "25": #Cronos Mainnet
   active: false
   type: "evm"
@@ -201,7 +200,6 @@
   contract_address: "secret1qzk574v8lckjmqdg3r3qf3337pk45m7qd8x02a"
   code_hash: "012dd8efab9526dec294b6898c812ef6f6ad853e32172788f54ef3c305c1ecc5"
   feegrant_address: "secret1tq6y8waegggp4fv2fcxk3zmpsmlfadyc7lsd69"
-
 
 #Testnet Chains
 
@@ -395,6 +393,14 @@
   chain_id: "300"
   api_endpoint: "https://sepolia.era.zksync.dev"
   contract_address: "0xAaA666CE51E4c4dcB50781d4F84461e267392fC9"
+  timeout: 1
+
+"1687": #Mint Testnet
+  active: false
+  type: "evm"
+  chain_id: "1687"
+  api_endpoint: "https://sepolia-testnet-rpc.mintchain.io"
+  contract_address: "0x8EaAB5e8551781F3E8eb745E7fcc7DAeEFd27b1f"
   timeout: 1
 
 "SolDN": #Solana DevNet
