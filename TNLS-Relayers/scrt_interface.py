@@ -115,7 +115,8 @@ class SCRTInterface(BaseChainInterface):
         while broadcast_attempt < max_broadcast_attempts:
             try:
                 # Broadcast the transaction in SYNC mode
-                final_tx = self.provider.tx.broadcast_adapter(tx, mode=BroadcastMode.BROADCAST_MODE_ASYNC)
+                final_tx = self.provider.tx.broadcast_adapter(tx, mode=BroadcastMode.BROADCAST_MODE_SYNC)
+                print(final_tx)
                 tx_hash = final_tx.txhash
                 self.logger.info(f"Transaction broadcasted with hash: {tx_hash}")
 
@@ -303,6 +304,7 @@ class SCRTContract(BaseContractInterface):
             fee=fee
         )
         txn = self.interface.wallet.create_and_sign_tx(options=tx_options)
+        print(txn)
         self.interface.sequence = self.interface.sequence + 1
         return txn
 

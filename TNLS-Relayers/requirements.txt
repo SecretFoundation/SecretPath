@@ -132,7 +132,7 @@ requests==2.30.0
 rich==13.7.1
 rlp==4.0.1
 rpds-py==0.18.1
-secret-sdk==1.8.0
+secret-sdk==1.8.1
 seqdiag==3.0.0
 shellingham==1.5.4
 six==1.16.0
